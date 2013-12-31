@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Immerse Yourself in Exercise</title>
+  <script src="js/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+ 
+<h2>rotateLR</h2><div id="rotateLR"></div>
+<h2>rotateFB</h2><div id="rotateFB"></div>
+<h2>compassDirection</h2><div id="compassDirection"></div>
+ 
+<script>
+
+  //ADDS LISTENER TO CHECK THE ORIENTATION OF THE WINDOW
+  window.addEventListener('deviceorientation', onOrientation);
+
+  var timeStamp = new Date().getTime();
+  // document.getElementById("time").innerHTML = timeStamp;
+  var jsonFileName= 'json/myfile_' + timeStamp + '.json';
+  console.log(jsonFileName);
+
+  function onOrientation(event) {
+      
+      // GETS ORIENTATION VALUES
+      var rotateLR = Math.round(event.gamma * 1)/1 ;
+      var rotateFB = Math.round(event.beta * 10)/10 ;
+      var compassDirection = Math.round(event.alpha * 10)/10 ;
+
+
+      document.getElementById("rotateLR").innerHTML = rotateLR;
+      document.getElementById("rotateFB").innerHTML = rotateFB;
+      document.getElementById("compassDirection").innerHTML = compassDirection;
+
+      // POSTS ORIENTATION VALUES TO PHP FILE - SO IT CAN UPDATE THE JSON FILE ---- ("\u0026" = & --- Concatanates additional values)
+      $.ajax({
+        type:"POST",
+        url: "update.php",
+        data: ("variable1=" + rotateLR) + "\u0026" + ("variable2=" + rotateFB) + "\u0026" + ("variable3=" + compassDirection)
+      });
+  };
+
+</script>
+ 
+</body>
+</html>

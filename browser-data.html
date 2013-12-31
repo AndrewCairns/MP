@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Immerse Yourself in Exercise</title>
+  <script src="js/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+
+<video id="video1" width="800" height="600" loop autoplay muted>
+  <source src="video/GoPro-mile-on-road-bike.mp4" type="video/mp4">
+</video>
+
+<h2>Speed</h2><div id="speed"></div>
+
+<h2>rotateLR</h2><div id="rotateLR"></div>
+<h2>rotateFB</h2><div id="rotateFB"></div>
+<h2>compassDirection</h2><div id="compassDirection"></div>
+ 
+<script>
+
+  //GETS JSON AND FILLS THE APPROPRIATE DIV WITH ITS CONTENT - EVERY 1 SECONDS
+  setInterval(function(){
+    $.getJSON("json/data.json", function(data) {
+      document.getElementById("rotateLR").innerHTML = data.rotateLR;
+      document.getElementById("rotateFB").innerHTML = data.rotateFB;
+      document.getElementById("compassDirection").innerHTML = data.compassDirection;
+
+      var speed = 0.1;
+
+      if (data.rotateFB < 0 || data.rotateFB >= 0 && data.rotateFB <= 10){
+        speed = 0.1;
+      }
+      else if (data.rotateFB > 10 && data.rotateFB <= 20){
+        speed = 0.2;
+      }
+      else if (data.rotateFB > 20 && data.rotateFB <= 30){
+        speed = 0.3;
+      }
+      else if (data.rotateFB > 30 && data.rotateFB <= 40){
+        speed = 0.4;
+      }
+      else if (data.rotateFB > 40 && data.rotateFB <= 50){
+        speed = 0.5;
+      }
+      else if (data.rotateFB > 50 && data.rotateFB <= 60){
+        speed = 0.6;
+      }
+      else if (data.rotateFB > 60 && data.rotateFB <= 70){
+        speed = 0.7;
+      }
+
+
+      myVid=document.getElementById("video1");
+      myVid.playbackRate= speed;
+      document.getElementById("speed").innerHTML = speed;
+
+    });
+  }, 500);
+
+
+</script>
+ 
+</body>
+</html>
